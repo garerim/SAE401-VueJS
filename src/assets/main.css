@@ -1,0 +1,10 @@
+*, ::after, ::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  min-height: 100vh;
+  font-family: Trident, "Trebuchet MS", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
