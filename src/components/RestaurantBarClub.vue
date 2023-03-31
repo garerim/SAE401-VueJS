@@ -16,7 +16,7 @@
     })
 
     const getData = async () => {
-        const restaurantGet = await fetch("https://localhost:7220/api/Restaurants/");
+        const restaurantGet = await fetch("https://apisae401.azurewebsites.net/api/Restaurants/");
         const finalRestaurantDataGet = await restaurantGet.json();
         finalRestaurantDataGet.forEach(restaurant => {
             if(restaurant.idClub == props.id){
@@ -24,7 +24,7 @@
             }
         })
 
-        const barGet = await fetch("https://localhost:7220/api/Bars/");
+        const barGet = await fetch("https://apisae401.azurewebsites.net/api/Bars/");
         const finalBarDataGet = await barGet.json();
         finalBarDataGet.forEach(bar => {
             if(bar.idClub == props.id){
@@ -32,7 +32,7 @@
             }
         })
           
-        await axios.get("https://localhost:7220/api/Photo/")
+        await axios.get("https://apisae401.azurewebsites.net/api/Photo/")
         .then(response => {
             photoData.value=response.data  
         })

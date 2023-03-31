@@ -13,13 +13,13 @@
     })
 
     const getData = async () => {
-        const comptabiliserGet = await fetch("https://localhost:7220/api/Comptabiliser/GetComptabiliserByIdClub?id=" + props.id);
+        const comptabiliserGet = await fetch("https://apisae401.azurewebsites.net/api/Comptabiliser/GetComptabiliserByIdClub?id=" + props.id);
         const finalComptabiliserGet = await comptabiliserGet.json();
         finalComptabiliserGet.forEach(comptabiliser => {
             if(comptabiliser.idClub == props.id){comptabiliserData.value.push(comptabiliser.idTypeChambre);}
         })
         
-        const typechambreGet = await fetch("https://localhost:7220/api/TypeChambres");
+        const typechambreGet = await fetch("https://apisae401.azurewebsites.net/api/TypeChambres");
         const finalTypechambreGet = await typechambreGet.json();
         finalTypechambreGet.forEach(typeChambre => {
             if(comptabiliserData.value.includes(typeChambre.typeChambreId)){

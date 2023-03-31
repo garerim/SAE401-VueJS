@@ -26,7 +26,7 @@ const getData = async () => {
     // .catch(error => {
     //     console.log(error);
     // })
-    axios.get("https://localhost:7220/api/Clubs")
+    axios.get("https://apisae401.azurewebsites.net/api/Clubs")
     .then(response => {
       response.data.forEach(club => {
         clubData.value.push(club)
@@ -36,7 +36,7 @@ const getData = async () => {
 
 const getPhotoRand = async () => {
     let id = Math.ceil(Math.random() * 512)
-    axios.get("https://localhost:7220/api/Photo/GetById/" + id)
+    axios.get("https://apisae401.azurewebsites.net/api/Photo/GetById/" + id)
     .then(response => {
         photoHome.value = response.data
     })

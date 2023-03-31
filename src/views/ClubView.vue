@@ -53,12 +53,12 @@
     var menuArray = ["Le Resort", "Chambres", "Activités & Spa", "Enfants & Famille", "Restaurants & Bars"]
 
     const getData = async () => {
-        axios.get("https://localhost:7220/api/Clubs/GetById/" + props.id)
-        .then(response => {à
+        axios.get("https://apisae401.azurewebsites.net/api/Clubs/GetById/" + props.id)
+        .then(response => {
             clubData.value=response.data  
         })
 
-        axios.get("https://localhost:7220/api/Photo/")
+        axios.get("https://apisae401.azurewebsites.net/api/Photo/")
         .then(response => {
             response.data.forEach(photo => {                
                 if (photo.idClub==clubData.value.idClub) {
@@ -69,13 +69,13 @@
             idPhotoAlea = photoData.value[idPhotoDataAlea].idPhoto;
         })      
 
-        const res = await fetch("https://localhost:7220/api/APourSousLoc/GetAPourSousLocs/");
+        const res = await fetch("https://apisae401.azurewebsites.net/api/APourSousLoc/GetAPourSousLocs/");
         const finalRes = await res.json();
         finalRes.forEach(fr => {
             if(fr.idClub == props.id){aPourSousLocData.value.push(fr.idSousLocalisation);}
         })
 
-        const resSousLoc = await fetch("https://localhost:7220/api/SousLocalisations");
+        const resSousLoc = await fetch("https://apisae401.azurewebsites.net/api/SousLocalisations");
         const finalResSousLoc = await resSousLoc.json();
         finalResSousLoc.forEach(fr => {
             if(aPourSousLocData.value.includes(fr.idSousLocalisation)){
@@ -84,12 +84,12 @@
         })
 
         
-        axios.get("https://localhost:7220/api/Photo/GetById/" + idPhotoAlea)
+        axios.get("https://apisae401.azurewebsites.net/api/Photo/GetById/" + idPhotoAlea)
         .then(response => {
             photoAleaClubData.value=response.data  
         })
 
-        const resProposer = await fetch("https://localhost:7220/api/Proposer/GetProposerByIdClub?id=" + props.id);
+        const resProposer = await fetch("https://apisae401.azurewebsites.net/api/Proposer/GetProposerByIdClub?id=" + props.id);
         const finalResProposer = await resProposer.json();
         finalResProposer.forEach(fr => {
             if(fr.idClub == props.id){
@@ -97,7 +97,7 @@
             }
         })
         
-        const resActivite = await fetch("https://localhost:7220/api/Activite");
+        const resActivite = await fetch("https://apisae401.azurewebsites.net/api/Activite");
         const finalResActivte = await resActivite.json();
         // console.log(proposerDatas.value);
         finalResActivte.forEach(item => {

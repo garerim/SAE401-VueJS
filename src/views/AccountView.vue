@@ -23,7 +23,7 @@ onMounted(() => {
 
     const email = auth.currentUser.email
     
-    axios.get("https://localhost:7220/api/Clients/GetByEmail/" + email)
+    axios.get("https://apisae401.azurewebsites.net/api/Clients/GetByEmail/" + email)
     .then(response => {
         user.value = response.data
     })

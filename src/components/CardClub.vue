@@ -16,14 +16,14 @@ let isLoading = ref(false)
 
 const getData = async () => {
 
-    const res = await fetch("https://localhost:7220/api/APourSousLoc/GetAPourSousLocs");
+    const res = await fetch("https://apisae401.azurewebsites.net/api/APourSousLoc/GetAPourSousLocs");
     const finalRes = await res.json();
     finalRes.forEach(fr => {
         if(fr.idClub == props.club.idClub){apslData.value.push(fr.idSousLocalisation);}
     })
 
-    // const resSousLoc = await fetch("https://localhost:7220/api/SousLocalisations/GetAll");
-    const resSousLoc = await fetch("https://localhost:7220/api/SousLocalisations/");
+    // const resSousLoc = await fetch("https://apisae401.azurewebsites.net/api/SousLocalisations/GetAll");
+    const resSousLoc = await fetch("https://apisae401.azurewebsites.net/api/SousLocalisations/");
     const finalResSousLoc = await resSousLoc.json();
     finalResSousLoc.forEach(fr => {
         if(apslData.value.includes(fr.idSousLocalisation)){
@@ -31,7 +31,7 @@ const getData = async () => {
         }
     })
 
-    const resPhoto = await fetch("https://localhost:7220/api/Photo");
+    const resPhoto = await fetch("https://apisae401.azurewebsites.net/api/Photo");
     const finalResPhoto = await resPhoto.json();
     finalResPhoto.forEach(photo => {
         if(photo.idClub == props.club.idClub){

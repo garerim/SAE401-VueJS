@@ -47,7 +47,7 @@ const register = () => {
               passwordClient: password.value
         }
 
-        fetch('https://localhost:7220/api/Clients', {
+        fetch('https://apisae401.azurewebsites.net/api/Clients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
