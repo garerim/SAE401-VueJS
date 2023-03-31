@@ -54,7 +54,7 @@
 
     const getData = async () => {
         axios.get("https://localhost:7220/api/Clubs/GetById/" + props.id)
-        .then(response => {
+        .then(response => {à
             clubData.value=response.data  
         })
 

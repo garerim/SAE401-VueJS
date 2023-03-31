@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import AccountView from '../views/AccountView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import SignInView from '../views/SignInView.vue'
+import ClubView from '../views/ClubView.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 const router = createRouter({
@@ -30,6 +31,12 @@ const router = createRouter({
       path: '/signin/',
       name: 'signin',
       component: SignInView
+    },
+    {
+      path: '/club/:id',
+      name: 'club',
+      component: ClubView,
+      props: true
     },
   ]
 })
