@@ -29,7 +29,7 @@ onMounted(() => {
 const register = () => {
     if(verifyRegisterData()){
 
-        const sendAPI = false
+        let sendAPI = false
 
         const newClient = {
               idTypeClient: 1,
