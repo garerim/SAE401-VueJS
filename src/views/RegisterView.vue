@@ -29,8 +29,6 @@ onMounted(() => {
 const register = () => {
     if(verifyRegisterData()){
 
-        let sendAPI = false
-
         const newClient = {
               idTypeClient: 1,
               genreClient: genre.value,
@@ -57,21 +55,6 @@ const register = () => {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            sendAPI = true
-        })
-        .catch(error => console.error(error));
-
-        // axios.post('https://localhost:7220/api/Clients', newClient)
-        // .then(response => {
-        //     console.log(response.data);
-        //     sendAPI = true
-        // })
-        // .catch(error => {
-        //     console.log(error.message);
-        // });
-
-
-        if (sendAPI) {
             const auth = getAuth()
             createUserWithEmailAndPassword(auth, email.value, password.value)
             .then((data) => {
@@ -83,7 +66,8 @@ const register = () => {
                 console.log(error.code);
                 alert(error.message)
             })
-        }
+        })
+        .catch(error => console.error(error));
     }
 }
 
@@ -113,7 +97,7 @@ const verifyRegisterData = () => {
             <div class="input-container">
 
                 <div class="input-left-container">
-                    <input placeholder="Email" type="text" v-model="email">
+                    <input placeholder="Email" type="email" v-model="email">
                     <input placeholder="Mot de passe" type="password" v-model="password">
                     <input type="text" placeholder="Nom" v-model="nom">
                     <input type="text" placeholder="Prenom" v-model="prenom">
@@ -126,7 +110,6 @@ const verifyRegisterData = () => {
                         <option disabled value="">Genre</option>
                         <option value="Homme">Homme</option>
                         <option value="Femme">Femme</option>
-                        <option value="Autre">Autre</option>
                     </select>
                     <input type="text" placeholder="Numéro Adresse" v-model="numAdresse">
                     <input type="text" placeholder="Rue Adresse" v-model="nomAdresse">
