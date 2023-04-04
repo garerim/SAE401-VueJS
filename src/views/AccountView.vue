@@ -2,10 +2,13 @@
 import { onMounted, ref } from 'vue';
 import {getAuth, onAuthStateChanged, signOut} from 'firebase/auth'
 import { useRouter } from 'vue-router';
+import EditAccountModal from '../components/EditAccountModal.vue'
 import axios from 'axios';
 import moment from 'moment';
+
 const user = ref([])
 const isLoggedIn = ref(false)
+const openModal = ref(false)
 // const props = defineProps({
 //     id: { required: true }
 // })
@@ -22,7 +25,7 @@ onMounted(() => {
     })
 
     const email = auth.currentUser.email
-    
+
     axios.get("https://apisae401.azurewebsites.net/api/Clients/GetByEmail/" + email)
     .then(response => {
         user.value = response.data
@@ -34,6 +37,10 @@ const handleSignOut = () => {
     signOut(auth).then(() => {
         router.push("/")
     })
+}
+
+const openEdit = () => {
+    openModal.value = !openModal.value
 }
 
 </script>
@@ -54,8 +61,13 @@ const handleSignOut = () => {
             <p>Ville : {{ user.villeClient }}</p>
             <p>Pays : {{ user.paysClient }}</p>
         </div>
-        <button class="signout-btn" v-if="isLoggedIn" @click="handleSignOut">Se Déconnecter</button>
+        <div class="account-btn-container">
+            <button class="signout-btn" v-if="isLoggedIn" @click="handleSignOut">Se Déconnecter</button>
+            <button class="edit-btn" v-if="isLoggedIn" @click="openEdit">Editer</button>
+        </div>
     </div>
+
+    <EditAccountModal :user="user" @close-modal="openEdit" v-if="openModal && user"/>
 </template>
 
 <style scoped>
@@ -96,6 +108,7 @@ const handleSignOut = () => {
 }
 
 .signout-btn{
+    margin-right: 5px;
     cursor: pointer;
     outline: none;
     border: solid 2px crimson;
@@ -111,6 +124,26 @@ const handleSignOut = () => {
 
 .signout-btn:hover{
     background-color: crimson;
+    color: #fff;
+}
+
+.edit-btn{
+    margin-left: 5px;
+    cursor: pointer;
+    outline: none;
+    border: solid 2px #00558a;
+    background-color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 9999px;
+    color: #00558a;
+    padding: 5px 20px;
+    margin-top: 20px;
+    transition: all .2s ease-in-out;
+}
+
+.edit-btn:hover{
+    background-color: #00558a;
     color: #fff;
 }
 

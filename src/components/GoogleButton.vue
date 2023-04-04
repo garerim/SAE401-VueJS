@@ -1,6 +1,7 @@
 <script setup>
 import { GoogleAuthProvider, getAuth, signInWithPopup } from '@firebase/auth';
 import { useRouter } from 'vue-router';
+import { SHA256 } from 'crypto-js';
 
 const router = useRouter();
 
@@ -9,6 +10,33 @@ const signInWithGoogle = () => {
     signInWithPopup(getAuth(), provider)
     .then((result) => {
         console.log(result.user);
+        var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var passwordLength = 12;
+        var password = "";
+
+        for (var i = 0; i <= passwordLength; i++) {
+            var randomNumber = Math.floor(Math.random() * chars.length);
+            password += chars.substring(randomNumber, randomNumber +1);
+        }
+
+        const newClient = {
+              idTypeClient: 1,
+              mailClient: result.user.email,
+              passwordClient: SHA256(password).toString()
+        }
+
+        fetch('https://apisae401.azurewebsites.net/api/Clients', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newClient)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => console.error(error));
         router.push("/account")
     })
     .catch((error) => {
