@@ -4,6 +4,7 @@ import AccountView from '../views/AccountView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import SignInView from '../views/SignInView.vue'
 import ClubView from '../views/ClubView.vue'
+import AboutView from '../views/AboutView.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 const router = createRouter({
@@ -37,6 +38,11 @@ const router = createRouter({
       name: 'club',
       component: ClubView,
       props: true
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView
     },
   ]
 })

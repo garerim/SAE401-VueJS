@@ -1,6 +1,7 @@
 <script setup>
 import CardClub from '../components/CardClub.vue';
 import { ref, onMounted, computed } from 'vue';
+import { RouterLink } from 'vue-router';
 import axios from 'axios'
 
 let clubData = ref([])
@@ -17,15 +18,6 @@ const filteredItems = computed(() => {
 })
 
 const getData = async () => {
-    // axios.get("https://localhost:7220/api/Clients")
-    // .then(response => {
-    //   response.data.forEach(club => {
-    //     clubData.value.push(club)
-    //   })
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // })
     axios.get("https://apisae401.azurewebsites.net/api/Clubs")
     .then(response => {
       response.data.forEach(club => {
@@ -61,7 +53,12 @@ onMounted(() => {
         <CardClub v-for="c in filteredItems" :club="c" />
     </div>
 
-    <!-- <p v-for="c in clubData">{{ c.mailClient }}</p> -->
+    <footer>
+        <RouterLink to="#">Politiques de confidentialités</RouterLink>
+        <RouterLink to="/about">A propos de nous</RouterLink>
+        <RouterLink to="#">Contact</RouterLink>
+        <RouterLink to="#">Mentions Légales</RouterLink>
+    </footer>
 
 </template>
 
@@ -113,6 +110,22 @@ onMounted(() => {
         font-size: 24px;
         padding: 5px;
         border-radius: 5px;
+    }
+
+    footer{
+        width: 100%;
+        height: auto;
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 85, 138, 0.5);
+    }
+
+    footer a{
+        text-decoration: none;
+        color: #fff;
+        margin: 0 10px;
     }
 
 </style>

@@ -4,6 +4,7 @@ import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
 import { useRouter, RouterLink } from 'vue-router'
 import GoogleButton from '../components/GoogleButton.vue';
 import axios from 'axios';
+import { SHA256 } from 'crypto-js';
 
 const email = ref("")
 const password = ref("")
@@ -42,7 +43,7 @@ const register = () => {
               codePostalClient: codePostal.value,
               villeClient: ville.value,
               paysClient: pays.value,
-              passwordClient: password.value
+              passwordClient: SHA256(password.value).toString()
         }
 
         fetch('https://apisae401.azurewebsites.net/api/Clients', {
