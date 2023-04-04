@@ -29,6 +29,7 @@ onMounted(() => {
     axios.get("https://apisae401.azurewebsites.net/api/Clients/GetByEmail/" + email)
     .then(response => {
         user.value = response.data
+        // console.log(response.data);
     })
 })
 
@@ -67,7 +68,7 @@ const openEdit = () => {
         </div>
     </div>
 
-    <EditAccountModal :user="user" @close-modal="openEdit" v-if="openModal && user"/>
+    <EditAccountModal :user="user.idClient" @close-modal="openEdit" v-if="openModal && user"/>
 </template>
 
 <style scoped>
