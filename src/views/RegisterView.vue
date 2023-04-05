@@ -119,6 +119,7 @@ const verifyRegisterData = () => {
                     <input type="text" placeholder="Pays" v-model="pays">
                 </div>
             </div>
+            
 
             <button class="signin-btn" @click="register">Créer un compte</button>
             <GoogleButton/>
