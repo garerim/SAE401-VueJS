@@ -3,7 +3,9 @@ import { ref, onMounted } from 'vue';
 import Swal from 'sweetalert2'
 import axios from 'axios';
 import { SHA256 } from 'crypto-js';
+import { clubMedStore } from "../stores/clubmed.js"
 
+const clubmed = clubMedStore()
 
 const emit = defineEmits(['closeModal'])
 const props = defineProps({
@@ -40,8 +42,6 @@ const handleEdit = (e) => {
     if (pays.value !== "") { userUpdated.value.paysClient = pays.value }
 
 
-    // console.log(userUpdated.value);
-
     axios.put('https://apisae401.azurewebsites.net/api/Clients/' + userUpdated.value.idClient, userUpdated.value)
     .then(response => {
         console.log(response.data);
@@ -54,32 +54,10 @@ const handleEdit = (e) => {
     .catch(error => {
         console.error(error);
     });
-
-    // fetch('https://apisae401.azurewebsites.net/api/Clients/' + userUpdated.value.idClient, {
-    //     method: 'PUT',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(userUpdated.value)
-    // })
-    // .then(response => {
-    //     Swal.fire({
-    //         icon: 'success',
-    //         title: 'Bravo',
-    //         text: 'Votre compte a bien été modifié'
-    //     })
-    // })
-    // .catch(error => {
-    //     console.error(error);
-    // });
 }
 
-onMounted(async () => {
-    await axios.get('https://apisae401.azurewebsites.net/api/Clients/GetById/' + props.user)
-        .then(response => {
-            userUpdated.value = response.data
-            // console.log(userUpdated.value);
-        })
+onMounted(() => {
+    userUpdated.value = clubmed.user.value
 })
 
 </script>

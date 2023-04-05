@@ -5,33 +5,14 @@ import { useRouter } from 'vue-router';
 import EditAccountModal from '../components/EditAccountModal.vue'
 import axios from 'axios';
 import moment from 'moment';
+import { clubMedStore } from "../stores/clubmed.js"
 
-const user = ref([])
-const isLoggedIn = ref(false)
+const clubmed = clubMedStore()
+
 const openModal = ref(false)
-// const props = defineProps({
-//     id: { required: true }
-// })
+
 const router = useRouter()
 
-onMounted(() => {
-    const auth = getAuth()
-    onAuthStateChanged(auth, (user) => {
-        if (user){
-            isLoggedIn.value = true
-        } else {
-            isLoggedIn.value = false
-        }
-    })
-
-    const email = auth.currentUser.email
-
-    axios.get("https://apisae401.azurewebsites.net/api/Clients/GetByEmail/" + email)
-    .then(response => {
-        user.value = response.data
-        // console.log(response.data);
-    })
-})
 
 const handleSignOut = () => {
     const auth = getAuth();
@@ -48,27 +29,28 @@ const openEdit = () => {
 
 <template>
     <div class="account-container">
+        <!-- {{ user }} -->
         <h1>Mon Compte</h1>
-        <div class="account-info">
-            <p>Nom : {{ user.nomClient }}</p>
-            <p>Prenom : {{ user.prenomClient }}</p>
-            <p>Genre : {{ user.genreClient }}</p>
-            <p>Date de Naissance : {{ moment(user.dateNaissanceClient).format('DD MMM YYYY') }}</p>
-            <p>Email : {{ user.mailClient }}</p>
-            <p>Num Tel : +33 {{ user.telClient }}</p>
-            <p>Num Adresse : {{ user.numeroAdresseClient }}</p>
-            <p>Rue Adresse : {{ user.adresseClient }}</p>
-            <p>Code Postal : {{ user.codePostalClient }}</p>
-            <p>Ville : {{ user.villeClient }}</p>
-            <p>Pays : {{ user.paysClient }}</p>
+        <div v-if="clubmed.user.value" class="account-info">
+            <p>Nom : {{ clubmed.user.value.nomClient }}</p>
+            <p>Prenom : {{ clubmed.user.value.prenomClient }}</p>
+            <p>Genre : {{ clubmed.user.value.genreClient }}</p>
+            <p>Date de Naissance : {{ moment(clubmed.user.value.dateNaissanceClient).format('DD MMM YYYY') }}</p>
+            <p>Email : {{ clubmed.user.value.mailClient }}</p>
+            <p>Num Tel : +33 {{ clubmed.user.value.telClient }}</p>
+            <p>Num Adresse : {{ clubmed.user.value.numeroAdresseClient }}</p>
+            <p>Rue Adresse : {{ clubmed.user.value.adresseClient }}</p>
+            <p>Code Postal : {{ clubmed.user.value.codePostalClient }}</p>
+            <p>Ville : {{ clubmed.user.value.villeClient }}</p>
+            <p>Pays : {{ clubmed.user.value.paysClient }}</p>
         </div>
         <div class="account-btn-container">
-            <button class="signout-btn" v-if="isLoggedIn" @click="handleSignOut">Se Déconnecter</button>
-            <button class="edit-btn" v-if="isLoggedIn" @click="openEdit">Editer</button>
+            <button class="signout-btn" v-if="clubmed.user.value" @click="handleSignOut">Se Déconnecter</button>
+            <button class="edit-btn" v-if="clubmed.user.value" @click="openEdit">Editer</button>
         </div>
     </div>
 
-    <EditAccountModal :user="user.idClient" @close-modal="openEdit" v-if="openModal && user"/>
+    <EditAccountModal :user="clubmed.user.value.idClient" @close-modal="openEdit" v-if="openModal && clubmed.user.value"/>
 </template>
 
 <style scoped>

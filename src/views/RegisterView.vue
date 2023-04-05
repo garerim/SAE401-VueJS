@@ -22,7 +22,7 @@ const pays = ref("")
 const router = useRouter()
 
 onMounted(() => {
-    if (getAuth().currentUser) {
+    if (getAuth() !== null) {
         router.push('/account')
     }
 })

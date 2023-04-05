@@ -1,9 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import {RouterLink} from 'vue-router'
+import { RouterLink } from 'vue-router'
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import { clubMedStore } from "../stores/clubmed.js"
 
+const clubmed = clubMedStore()
 
 const props = defineProps({
     club: Object
@@ -16,28 +18,17 @@ let isLoading = ref(false)
 
 const getData = async () => {
 
-    const res = await fetch("https://apisae401.azurewebsites.net/api/APourSousLoc/GetAPourSousLocs");
-    const finalRes = await res.json();
-    finalRes.forEach(fr => {
-        if(fr.idClub == props.club.idClub){apslData.value.push(fr.idSousLocalisation);}
+    clubmed.APourSousLocs.forEach(fr => {
+        if (fr.idClub == props.club.idClub) { apslData.value.push(fr.idSousLocalisation); }
     })
 
-    // const resSousLoc = await fetch("https://apisae401.azurewebsites.net/api/SousLocalisations/GetAll");
-    const resSousLoc = await fetch("https://apisae401.azurewebsites.net/api/SousLocalisations/");
-    const finalResSousLoc = await resSousLoc.json();
-    finalResSousLoc.forEach(fr => {
-        if(apslData.value.includes(fr.idSousLocalisation)){
+    clubmed.SousLocs.forEach(fr => {
+        if (apslData.value.includes(fr.idSousLocalisation)) {
             sousLocData.value.push(fr)
         }
     })
 
-    const resPhoto = await fetch("https://apisae401.azurewebsites.net/api/Photo");
-    const finalResPhoto = await resPhoto.json();
-    finalResPhoto.forEach(photo => {
-        if(photo.idClub == props.club.idClub){
-            photoData.value.push(photo);
-        }
-    })
+    photoData.value = clubmed.photos.filter(photo => photo.idClub === props.club.idClub);
 
     isLoading.value = true
 }
@@ -49,16 +40,15 @@ onMounted(() => {
 </script>
 
 <template>
-
     <div class="card-club-container">
         <div>
             <Carousel v-if="isLoading">
                 <Slide v-for="p in photoData" :key="p.idPhoto">
                     <img class="carousel__item" :src="p.urlphoto">
                 </Slide>
-    
+
                 <template #addons>
-                <Navigation />
+                    <Navigation />
                 </template>
             </Carousel>
             <div v-else class="loader"></div>
@@ -67,15 +57,13 @@ onMounted(() => {
             <div class="destination-club">
                 <span v-for="sl in sousLocData">{{ sl.nomSousLocalisation }}</span>
             </div>
-            <RouterLink :to="{path: '/club/' + props.club.idClub}" class="libelle-club">{{props.club.nomClub}}</RouterLink>
+            <RouterLink :to="{ path: '/club/' + props.club.idClub }" class="libelle-club">{{ props.club.nomClub }}</RouterLink>
         </div>
     </div>
-
 </template>
 
 <style scoped>
-
-.loader{
+.loader {
     width: 100%;
     height: 200px;
     background-image: url('../assets/loader.gif');
@@ -85,40 +73,41 @@ onMounted(() => {
 }
 
 .carousel__item {
-  min-height: 200px;
-  width: 100%;
-  background-color: var(--vc-clr-primary);
-  color: #fff;
-  font-size: 20px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    min-height: 200px;
+    width: 100%;
+    background-color: var(--vc-clr-primary);
+    color: #fff;
+    font-size: 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .carousel__slide {
-  padding: 10px 0;
+    padding: 10px 0;
 }
 
 .carousel__prev,
 .carousel__next {
-  box-sizing: content-box;
-  border: 5px solid white;
+    box-sizing: content-box;
+    border: 5px solid white;
 }
 
-.card-club-container{
+.card-club-container {
     width: 300px;
     height: auto;
     margin: 10px;
     text-decoration: none;
 }
 
-.card-club-container .img-container{
+.card-club-container .img-container {
     width: 100%;
     height: auto;
     position: relative;
 }
-.card-club-container .img-container button{
+
+.card-club-container .img-container button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -132,36 +121,40 @@ onMounted(() => {
     background-repeat: no-repeat;
     cursor: pointer;
 }
-.card-club-container .img-container button.prec{
+
+.card-club-container .img-container button.prec {
     left: 5px;
     background-image: url('../assets/left-arrow.svg');
 }
-.card-club-container .img-container button.suiv{
+
+.card-club-container .img-container button.suiv {
     right: 5px;
     background-image: url('../assets/right-arrow.svg');
 }
 
 
-.card-club-container .img-container img{
+.card-club-container .img-container img {
     width: 100%;
     height: auto;
     object-fit: cover;
 }
-.card-club-container .img-container img.img-active{
+
+.card-club-container .img-container img.img-active {
     display: block;
 }
 
-.content-club-container .destination-club{
+.content-club-container .destination-club {
     font-weight: bold;
     color: #aaa;
     font-size: 14px;
 }
-.content-club-container .destination-club span{
+
+.content-club-container .destination-club span {
     margin-right: 5px;
 }
-.content-club-container .libelle-club{
+
+.content-club-container .libelle-club {
     font-weight: bold;
     color: #000;
 }
-
 </style>

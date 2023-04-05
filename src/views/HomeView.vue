@@ -3,6 +3,9 @@ import CardClub from '../components/CardClub.vue';
 import { ref, onMounted, computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import axios from 'axios'
+import { clubMedStore } from "../stores/clubmed.js"
+
+const clubmed = clubMedStore()
 
 let clubData = ref([])
 let searchQuery = ref("")
@@ -17,27 +20,17 @@ const filteredItems = computed(() => {
       })
 })
 
-const getData = async () => {
-    axios.get("https://apisae401.azurewebsites.net/api/Clubs")
-    .then(response => {
-      response.data.forEach(club => {
-        clubData.value.push(club)
-      })
-    })
-}
-
 const getPhotoRand = async () => {
     let id = Math.ceil(Math.random() * 512)
     axios.get("https://apisae401.azurewebsites.net/api/Photo/GetById/" + id)
     .then(response => {
         photoHome.value = response.data
     })
-    
 }
 
 onMounted(() => {
     getPhotoRand();
-    getData();
+    clubData.value = clubmed.clubs
 })
 </script>
 
