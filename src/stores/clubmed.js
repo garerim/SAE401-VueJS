@@ -7,6 +7,9 @@ export const clubMedStore = defineStore('clubmed', () => {
 
     // Variables Exportées
     const clubs = reactive([])
+    const restaurants = reactive([])
+    const bars = reactive([])
+    const avis = reactive([])
     const user = reactive({})
     const photos = reactive([])
     const APourSousLocs = reactive([])
@@ -50,5 +53,23 @@ export const clubMedStore = defineStore('clubmed', () => {
         response.data.forEach(sl => SousLocs.push(sl))
     })
 
-    return { clubs, user, photos, APourSousLocs, SousLocs }
+    // Restaurant
+    axios.get("https://apisae401.azurewebsites.net/api/Restaurant")
+    .then(response => {
+        response.data.forEach(Restaurant => restaurants.push(Restaurant))
+    })
+
+    // Bar
+    axios.get("https://apisae401.azurewebsites.net/api/Bar")
+    .then(response => {
+        response.data.forEach(Bar => bars.push(Bar))
+    })
+
+    // Avis
+    axios.get("https://apisae401.azurewebsites.net/api/Avi")
+    .then(response => {
+        response.data.forEach(avi => avis.push(avi))
+    })
+
+    return { clubs, user, photos, APourSousLocs, SousLocs, restaurants, bars, avis }
 })

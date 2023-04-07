@@ -8,6 +8,7 @@
     import ActiviteClub from '../components/ActiviteClub.vue'
     import ChambreClub from '../components/ChambreClub.vue'
     import RestaurantBarClub from '../components/RestaurantBarClub.vue'
+    import { clubMedStore } from "../stores/clubmed.js"
 
     const props = defineProps({
         id: { type: Number,
@@ -45,12 +46,12 @@
       },
       // 1024 and up
       1024: {
-        itemsToShow: 5,
+        itemsToShow: 4,
         snapAlign: 'start',
       },
     }
 
-    var menuArray = ["Le Resort", "Chambres", "Activités & Spa", "Enfants & Famille", "Restaurants & Bars"]
+    var menuArray = ["Le Resort", "Chambres", "Activités & Spa", "Restaurants & Bars"]
 
     const getData = async () => {
         axios.get("https://apisae401.azurewebsites.net/api/Clubs/GetById/" + props.id)
@@ -257,7 +258,7 @@
 
     #carousel-menu-club{
         width: 75%;
-        margin: 6% 12.5%;
+        margin: 6% 13%;
     }
 
     .carousel-menu{
